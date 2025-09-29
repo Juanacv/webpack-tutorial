@@ -24,10 +24,17 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-                    /* 'style-loader', // inyecta CSS en el DOM */
-                    cssLoader, 
-                    'css-loader',   // interpreta @import y url()
-                    'sass-loader'   // compila SCSS a CSS
+                    cssLoader,
+                    // interpreta @import y url()
+                    {
+                        loader: 'css-loader',
+                        options: { sourceMap: isDevelopment }
+                    },
+                    // compila SCSS a CSS
+                    {
+                        loader: 'sass-loader',
+                        options: { sourceMap: isDevelopment }
+                    }
                 ]
             }
         ]
