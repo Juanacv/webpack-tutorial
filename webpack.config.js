@@ -2,8 +2,12 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+const cssLoader = isDevelopment ? MiniCssExtractPlugin.loader : 'style-loader';
 
 module.exports = {
+    mode: isDevelopment ? 'development' : 'production', 
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -21,7 +25,7 @@ module.exports = {
                 test: /\.s[ac]ss$/i,
                 use: [
                     /* 'style-loader', // inyecta CSS en el DOM */
-                    MiniCssExtractPlugin.loader, 
+                    cssLoader, 
                     'css-loader',   // interpreta @import y url()
                     'sass-loader'   // compila SCSS a CSS
                 ]
@@ -37,14 +41,13 @@ module.exports = {
             filename: 'index.html',
             inject : 'head'
         }),
-        new MiniCssExtractPlugin({
-            filename: '[name].[contenthash].css' // Nombre del archivo CSS de salida
-        })
+        ...(isDevelopment ? [new MiniCssExtractPlugin({
+            // Puedes usar [name] o algo fijo si no quieres hashes en desarrollo
+            filename: '[name].[contenthash].css'
+        })] : []),
     ],
     optimization: {
-        minimizer: [
-            new CssMinimizerPlugin(),
-        ]
+        minimizer: isDevelopment ? [] : ['...', new CssMinimizerPlugin()],
     },
     devtool: 'source-map'
 }
