@@ -1,0 +1,44 @@
+// styles.scss
+
+@import './variables';
+
+#app {
+    width: $box-width;
+    height: $box-height;
+    background-color: $main-bg-color;
+    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 100px auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    // Se mantiene el hover de #app
+    &:hover {
+        background-color: lighten($main-bg-color, 10%);
+    }
+    
+    // Anidamiento SCSS
+    h1 {
+        font-family: $font-stack;
+        font-size: 1.5em;
+        // Anidamiento SCSS
+        span {
+            // Si el span tiene otros estilos, déjalos aquí.
+            color: $span-font-color; // Color base para el enlace
+    
+            // Regla para el enlace <a> DENTRO del span
+            a {
+                text-decoration: none; // Opcional: quita el subrayado predeterminado
+                font-weight: bold;
+                padding: 5px;
+    
+                // Se aplica el hover directamente al enlace <a>
+                &:hover {
+                    color: $anchor-hover-color; // Cambia a rojo granate al hacer hover
+                }
+            }
+        }
+    }
+
+}
